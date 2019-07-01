@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>评论页面</title>
+</head>
+<body>
+    <ul>
+        {% for c in comments %}
+{#            <li><a href="/post/{{ c.target_id }}.html">{{ c.target.title }}</a>{{ c.nickname }}: {{ c.content }}</li>#}
+            <li><a href="{% url 'post-detail' c.target_id %}">{{ c.target.title }}</a>{{ c.nickname }}: {{ c.content }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

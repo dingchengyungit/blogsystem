@@ -24,7 +24,7 @@ class PostInline(admin.TabularInline):
 class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline]
 
-    list_display = ('name', 'status', 'is_nav', 'created_time')
+    list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
     # fields = ('name', 'status', 'is_nav', 'owner')
     fields = ('name', 'status', 'is_nav')
 
@@ -104,10 +104,10 @@ class PostAdmin(BaseOwnerAdmin):
                 'content'
             ),
         }),
-        ('额外信息', {
-            'classes': ('collapse', ),
-            'fields': ('tag', ),
-        })
+        # ('额外信息', {
+        #     'classes': ('collapse', ),
+        #     'fields': ('tag', ),
+        # })
     )
 
     # filter_horizontal = ('tag',)

@@ -3,6 +3,9 @@
 import os
 import sys
 
+# reload(sys)
+# sys.setdefaultencoding('utf8')
+
 
 def main():
     # os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'blogsystem.settings')

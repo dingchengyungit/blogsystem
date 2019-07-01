@@ -1,10 +1,18 @@
 # -*-coding:utf-8 -*-
 from django.views.generic import ListView, DetailView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 
 from config.models import SideBar
 from .models import Tag, Category, Post
 # Create your views here.
+
+
+def staticthml(request):
+    return render(request, 'blog/static.html', context={})
+
+
+def demo(request):
+    return render(request, 'blog/demo.html', context={})
 
 
 class CommonViewMixin:

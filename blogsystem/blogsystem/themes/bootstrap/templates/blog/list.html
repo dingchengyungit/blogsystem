@@ -11,6 +11,10 @@
 
 {% block main %}
     <ul>
+        {% if not post_list %}
+            没有列表啊。。。
+        {% endif %}
+
         {% for p in post_list %}
             <div class="card post">
                 <div class="card-body">
@@ -18,7 +22,7 @@
                         <a href="{% url 'post-detail' p.id %}">{{ p.title }}</a>
                     </h5>
                     <span class="card-link">
-                        作者：<a href="#">{{ p.owner.username }}</a>
+                        作者：<a href="{% url 'author' p.owner_id %}">{{ p.owner.username }}</a>
                     </span>
                     <span class="card-link">
                         分类：<a href="{% url 'category-list' p.category.id %}">{{ p.category.name }}</a>

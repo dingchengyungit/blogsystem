@@ -1,8 +1,12 @@
 # -*-coding:utf-8 -*-
+from django.db.models import Q
+
 from django.views.generic import ListView, DetailView
 from django.shortcuts import get_object_or_404, render
 
-from config.models import SideBar
+from config.models import SideBar, Link
+from comment.forms import CommentForm
+from comment.models import Comment
 from .models import Tag, Category, Post
 # Create your views here.
 
@@ -27,9 +31,9 @@ class CommonViewMixin:
         return context
 
 
-class IndexView(ListView):
+class IndexView(ListView, CommonViewMixin):
     queryset = Post.latest_posts()
-    paginate_by = 1
+    paginate_by = 3
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
@@ -73,6 +77,42 @@ class PostDetailView(CommonViewMixin, DetailView):
     template_name = 'blog/detail.html'
     context_object_name = 'post'
     pk_url_kwarg = 'post_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'comment_form': CommentForm,
+            'comment_list': Comment.get_by_target(self.request.path)
+        })
+        return context
+
+class SearchView(IndexView):
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context.update({
+            'keyword': self.request.GET.get('keyword', '')
+        })
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        keyword = self.request.GET.get('keyword')
+        if not keyword:
+            return queryset
+        result = queryset.filter(Q(title__icontains=keyword) | Q(desc__icontains=keyword))
+        return result
+
+
+class AuthView(IndexView):
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        author_id = self.kwargs.get('owner_id')
+        return queryset.filter(owner_id=author_id)
+
+class LinklistView(CommonViewMixin, ListView):
+    queryset = Link.objects.filter(status=Link.STATUS_NORMAL)
+    template_name = 'config/links.html'
+    context_object_name = 'link_list'
 
 
 '''

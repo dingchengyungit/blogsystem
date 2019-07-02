@@ -16,11 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
-from blog.views import (IndexView, CategoryView, TagView, PostDetailView, demo, staticthml)
+from blog.views import (IndexView, CategoryView, TagView, PostDetailView, SearchView, AuthView, LinklistView, demo, staticthml)
+from comment.views import CommentView
 from config.views import links
 from .custom_site import custom_site
 
 urlpatterns = [
+    url(r'^comment/$', CommentView.as_view(), name='comment'),
+    url(r'^links/$', LinklistView.as_view(), name='links'),
+    url(r'^author/(?P<owner_id>\d+)/$', AuthView.as_view(), name='author'),
+    url(r'^search/$', SearchView.as_view(), name='search'),
     url(r'^blog/static.html$', staticthml),
     url(r'^blog/demo.html$', demo),
     url(r'^$', IndexView.as_view(), name='index'),

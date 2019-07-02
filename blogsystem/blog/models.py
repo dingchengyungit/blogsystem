@@ -1,4 +1,5 @@
 # coding=UTF-8
+import mistune
 from django.db import models
 
 from django.contrib.auth.models import User
@@ -88,6 +89,10 @@ class Post(models.Model):
 
     pv = models.PositiveIntegerField(default=1)
     uv = models.PositiveIntegerField(default=1)
+
+    def save(self, *args, **kwargs):
+        self.content_html = mistune.markdown(self.content)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = verbose_name_plural = "文章"

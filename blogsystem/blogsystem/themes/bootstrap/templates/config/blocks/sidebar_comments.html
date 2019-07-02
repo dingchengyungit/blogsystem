@@ -8,7 +8,10 @@
     <ul>
         {% for c in comments %}
 {#            <li><a href="/post/{{ c.target_id }}.html">{{ c.target.title }}</a>{{ c.nickname }}: {{ c.content }}</li>#}
-            <li><a href="{% url 'post-detail' c.target_id %}">{{ c.target.title }}</a>{{ c.nickname }}: {{ c.content }}</li>
+{#            <li><a href="{% url 'post-detail' c.target_id %}">{{ c.target.title }}</a>{{ c.nickname }}: {{ c.content }}</li>#}
+            {% autoescape off%}
+            <li><a href="{{ c.target }}">{{ c.target.title }}</a> | {{ c.nickname }}:{{ c.content }}</li>
+            {% endautoescape %}
         {% endfor %}
     </ul>
 </body>

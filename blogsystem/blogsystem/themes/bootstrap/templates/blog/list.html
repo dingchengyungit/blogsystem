@@ -10,36 +10,34 @@
 {% endblock %}
 
 {% block main %}
-    <ul>
-        {% if not post_list %}
-            没有列表啊。。。
-        {% endif %}
+    {% if not post_list %}
+        没有列表啊。。。
+    {% endif %}
 
-        {% for p in post_list %}
-            <div class="card post">
-                <div class="card-body">
-                    <h5 class="card-title">
-                        <a href="{% url 'post-detail' p.id %}">{{ p.title }}</a>
-                    </h5>
-                    <span class="card-link">
-                        作者：<a href="{% url 'author' p.owner_id %}">{{ p.owner.username }}</a>
-                    </span>
-                    <span class="card-link">
-                        分类：<a href="{% url 'category-list' p.category.id %}">{{ p.category.name }}</a>
-                    </span>
-                    <span class="card-link">
-                        标签：
-                        {% for tag in p.tag.all %}
-                            <a href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
-                        {% endfor %}
-                    </span>
-                    <p class="card-text">
-                        {{ p.desc }}<a href="{% url 'post-detail' p.id %}">完整内容</a>
-                    </p>
-                </div>
+    {% for p in post_list %}
+        <div class="card post">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'post-detail' p.id %}">{{ p.title }}</a>
+                </h5>
+                <span class="card-link">
+                    作者：<a href="{% url 'author' p.owner_id %}">{{ p.owner.username }}</a>
+                </span>
+                <span class="card-link">
+                    分类：<a href="{% url 'category-list' p.category.id %}">{{ p.category.name }}</a>
+                </span>
+                <span class="card-link">
+                    标签：
+                    {% for tag in p.tag.all %}
+                        <a href="{% url 'tag-list' tag.id %}">{{ tag.name }}</a>
+                    {% endfor %}
+                </span>
+                <p class="card-text">
+                    {{ p.desc }}<a href="{% url 'post-detail' p.id %}">完整内容</a>
+                </p>
             </div>
-        {% endfor %}
-    </ul>
+        </div>
+    {% endfor %}
 
     {% if page_obj %}
         {% if page_obj.has_previous %}

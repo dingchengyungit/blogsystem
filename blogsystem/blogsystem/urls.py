@@ -13,6 +13,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import xadmin
+
 from django.conf.urls import url
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
@@ -27,6 +29,7 @@ from config.views import links
 from .custom_site import custom_site
 
 urlpatterns = [
+    url(r'^admin/', xadmin.site.urls, name='xadmin'),
     url(r'^rss|feed/', LatestPostFeed(), name='rss'),
     url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
@@ -40,8 +43,8 @@ urlpatterns = [
     url(r'^tag/(?P<tag_id>\d+)/$', TagView.as_view(), name='tag-list'),
     url(r'^post/(?P<post_id>\d+).html$', PostDetailView.as_view(), name='post-detail'),
     url(r'^links/$', links, name='links'),
-    url(r'^super_admin/', admin.site.urls, name='super-admin'),
-    url(r'^admin/', custom_site.urls, name='admin')
+    # url(r'^super_admin/', admin.site.urls, name='super-admin'),
+    # url(r'^admin/', custom_site.urls, name='admin')
     # path('super_admin/', admin.site.urls),
     # path('admin/', custom_site.urls),
 ]

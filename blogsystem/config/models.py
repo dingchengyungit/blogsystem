@@ -70,7 +70,7 @@ class SideBar(models.Model):
     @property
     def content_html(self):
         '''直接渲染模板'''
-        from blog.models import Post # 避免循环引用
+        from blog.models import Post  # 避免循环引用
         from comment.models import Comment
 
         result = ''
@@ -79,17 +79,17 @@ class SideBar(models.Model):
             result = self.content
         elif self.display_type == self.DISPLAY_LATEST:
             context = {
-                'posts': Post.latest_posts()
+                'posts': Post.latest_posts()[:3]  # 显示3条信息，显示几条信息如果能够做成配置的就好了
             }
-            result = render_to_string('config/blocks/sidebar_post.html', context)
+            result = render_to_string('config/blocks/sidebar_posts.html', context)
         elif self.display_type == self.DISPLAY_HOT:
             context = {
-                'posts': Post.hot_posts()
+                'posts': Post.hot_posts()[:3]  # 显示3条信息，显示几条信息如果能够做成配置的就好了
             }
-            result = render_to_string('config/blocks/sidebar_post.html', context)
+            result = render_to_string('config/blocks/sidebar_posts.html', context)
         elif self.display_type == self.DISPLAY_COMMENT:
             context = {
-                'comments': Comment.objects.filter(status=Comment.STATUS_NORMAL)
+                'comments': Comment.objects.filter(status=Comment.STATUS_NORMAL)[:3]  # 显示3条信息，显示几条信息如果能够做成配置的就好了
             }
             result = render_to_string('config/blocks/sidebar_comments.html', context)
 

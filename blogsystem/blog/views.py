@@ -33,9 +33,9 @@ class CommonViewMixin:
         return context
 
 
-class IndexView(ListView, CommonViewMixin):
+class IndexView(CommonViewMixin, ListView):
     queryset = Post.latest_posts()
-    paginate_by = 3
+    paginate_by = 2
     context_object_name = 'post_list'
     template_name = 'blog/list.html'
 
@@ -81,13 +81,6 @@ class PostDetailView(CommonViewMixin, DetailView):
     pk_url_kwarg = 'post_id'
 
     def get(self, request, *args, **kwargs):
-        # response = super().get(request, *args, **kwargs)
-        # Post.objects.filter(pk=self.object.id).update(pv=F('pv') + 1, uv=F('uv') + 1)
-        #
-        # # 调试用
-        # from django.db import connection
-        # print(connection.queries)
-        # return response
         response = super().get(request, *args, **kwargs)
         self.handle_visited()
         return response

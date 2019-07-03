@@ -11,6 +11,8 @@ from blog.adminforms import PostAdminForm
 
 from blogsystem.base_admin import BaseOwnerAdmin
 from blogsystem.custom_site import custom_site
+
+
 # Register your models here.
 
 
@@ -25,12 +27,7 @@ class CategoryAdmin(BaseOwnerAdmin):
     inlines = [PostInline]
 
     list_display = ('name', 'status', 'is_nav', 'created_time', 'post_count')
-    # fields = ('name', 'status', 'is_nav', 'owner')
     fields = ('name', 'status', 'is_nav')
-
-    # def save_model(self, request, obj, form, change):
-    #     obj.owner = request.user
-    #     return super(CategoryAdmin, self).save_model(request, obj, form, change)
 
     def post_count(self, obj):
         return obj.post_set.count()
@@ -40,13 +37,13 @@ class CategoryAdmin(BaseOwnerAdmin):
 
 @admin.register(Tag, site=custom_site)
 class TagAdmin(BaseOwnerAdmin):
-    list_display = ('name', 'status', 'created_time')
-    # fields = ('name', 'status', 'owner')
+    list_display = ('name', 'status', 'created_time', 'post_count')
     fields = ('name', 'status')
 
-    # def save_model(self, request, obj, form, change):
-    #     obj.owner = request.user
-    #     return super(TagAdmin, self).save_model(request, obj, form, change)
+    def post_count(self, obj):
+        return obj.post_set.count()
+
+    post_count.short_description = '文章数量'
 
 
 class CategoryOwnerFilter(admin.SimpleListFilter):
@@ -74,28 +71,19 @@ class PostAdmin(BaseOwnerAdmin):
 
     # list_filter = ['category', ]
     list_filter = [CategoryOwnerFilter]
-    search_fields = ['title', 'category__name']
+    search_fields = ['title', 'category__name']  # 搜索关联model的数据
     save_on_top = True
 
     actions_on_top = True
     actions_on_bottom = True
 
     exclude = ['owner']
-    '''
-    fields = (
-        ('category', 'title'),
-        'desc',
-        'status',
-        'content',
-        'tag',
-    )
-    '''
     fieldsets = (
         ('基础配置', {
             'description': '基础配置描述',
             'fields': (
                 ('title', 'category'),
-                ('status', ),
+                ('status',),
                 'tag',
             ),
         }),
@@ -119,19 +107,12 @@ class PostAdmin(BaseOwnerAdmin):
             '<a href="{}">编辑</a>',
             reverse('cus_admin:blog_post_change', args=(obj.id,))
         )
-    operator.short_description = '操作'
 
-    # def save_model(self, request, obj, form, change):
-    #     obj.owner = request.user
-    #     return super(PostAdmin, self).save_model(request, obj, form, change)
-    #
-    # def get_queryset(self, request):
-    #     qs = super(PostAdmin, self).get_queryset(request)
-    #     return qs.filter(owner=request.user)
+    operator.short_description = '操作'
 
     class Media:
         css = {
-            'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css", ),
+            'all': ("https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css",),
         }
         js = ('https://cdn.bootcss.com/bootstrap/4.0.0-beta.2/js/bootstrap.bundle.js',)
 

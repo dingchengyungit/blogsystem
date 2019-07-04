@@ -129,9 +129,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+# 静态资源文件
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'themes', THEME, 'static')]
 
+# 富文本编辑器
 CKEDITOR_CONFIGS= {
     'default': {
         'toolbar': 'full',
@@ -142,8 +144,16 @@ CKEDITOR_CONFIGS= {
     }
 }
 
+# 上传文件保存位置
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CKEDITOR_UPLOAD_PATH = 'article_images'
 
-DEFAULT_FILE_STORAGE = 'blogsystem.storage.WatermarkStorage'
+DEFAULT_FILE_STORAGE = 'blogsystem.storage.WatermarkStorage'  # 上传图片水印保存
+
+# restful接口
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2
+}
+

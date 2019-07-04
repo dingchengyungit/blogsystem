@@ -30,7 +30,7 @@ from blog.views import (IndexView, CategoryView, TagView, PostDetailView, Search
 from blog.sitemap import PostSitemap
 from blog.rss import LatestPostFeed
 # from blog.apis import post _list, PostList
-from blog.apis import PostViewSet
+from blog.apis import PostViewSet, CategoryViewSet
 
 from comment.views import CommentView
 from config.views import links
@@ -38,6 +38,7 @@ from .custom_site import custom_site
 
 router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='api-post')
+router.register(r'^category', CategoryViewSet, base_name='api-category')
 
 urlpatterns = [
     url(r'^api/docs/', include_docs_urls(title='blogsystem apis')),

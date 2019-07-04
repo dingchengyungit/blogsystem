@@ -90,7 +90,11 @@ class PostAdmin(BaseOwnerAdmin):
         ('内容', {
             'fields': (
                 'desc',
-                'content'
+                # 'content'
+                'is_md',
+                'content_ck',
+                'content_md',
+                'content',
             ),
         }),
         # ('额外信息', {

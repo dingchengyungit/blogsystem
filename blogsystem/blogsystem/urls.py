@@ -65,3 +65,9 @@ urlpatterns = [
     # path('super_admin/', admin.site.urls),
     # path('admin/', custom_site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'__debug__/', include(debug_toolbar.urls))
+    ] + urlpatterns

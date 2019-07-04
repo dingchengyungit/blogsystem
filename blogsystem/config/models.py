@@ -79,7 +79,7 @@ class SideBar(models.Model):
             result = self.content
         elif self.display_type == self.DISPLAY_LATEST:
             context = {
-                'posts': Post.latest_posts()[:3]  # 显示3条信息，显示几条信息如果能够做成配置的就好了
+                'posts': Post.latest_posts(with_related=False)[:3]  # 显示3条信息，显示几条信息如果能够做成配置的就好了
             }
             result = render_to_string('config/blocks/sidebar_posts.html', context)
         elif self.display_type == self.DISPLAY_HOT:

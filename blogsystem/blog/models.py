@@ -135,8 +135,10 @@ class Post(models.Model):
         return post_list, category
 
     @classmethod
-    def latest_posts(cls):
+    def latest_posts(cls, with_related=True):
         post_list = cls.objects.filter(status=cls.STATUS_NORMAL)
+        if with_related:
+            post_list = post_list.select_related('owner', 'category')
         return post_list
 
     @classmethod

@@ -21,13 +21,26 @@ class PostAdminForm(forms.ModelForm):
         label='标签'
     )
 
-    content_ck = forms.CharField(widget=CKEditorUploadingWidget(), label='正文', required=False)
-    content_md = forms.CharField(widget=forms.Textarea, label='正文', required=False)
-    content = forms.CharField(widget=forms.HiddenInput(), required=False)
+    content = forms.CharField(widget=CKEditorUploadingWidget(), label='正文', required=False)
+    '''
+            当markdown和富文本编辑器共存的时候，把这段注释取消掉,
+            把上面那行content = forms.CharField(...) 注释掉
+        '''
+    # content_ck = forms.CharField(widget=CKEditorUploadingWidget(), label='正文', required=False)
+    # content_md = forms.CharField(widget=forms.Textarea, label='正文', required=False)
+    # content = forms.CharField(widget=forms.HiddenInput(), required=False)
+    # content = content_ck
 
-    class Meta:
-        model = Post
-        fields = ('category', 'tag', 'title', 'desc', 'content', 'status')
+    '''
+            当markdown和富文本编辑器共存的时候，把这段注释取消掉即可
+
+
+
+class Meta:
+    model = Post
+    fields = {
+        'category', 'tag', 'desc', 'title', 'is_md', 'content', 'content_md', 'content_ck', 'status'
+    }
 
     def __init__(self, instance=None, initial=None, **kwargs):
         initial = initial or {}
@@ -40,6 +53,7 @@ class PostAdminForm(forms.ModelForm):
         super().__init__(instance=instance, initial=initial, **kwargs)
 
     def clean(self):
+
         is_md = self.cleaned_data.get('is_md')
         if is_md:
             content_field_name = 'content_md'
@@ -56,4 +70,5 @@ class PostAdminForm(forms.ModelForm):
 
 
 class Media:
-    js = ('js/post_editor.js', )
+    js = ('js/post_editor.js',)
+'''

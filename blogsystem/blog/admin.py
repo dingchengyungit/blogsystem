@@ -90,11 +90,11 @@ class PostAdmin(BaseOwnerAdmin):
         ('内容', {
             'fields': (
                 'desc',
-                # 'content'
-                'is_md',
-                'content_ck',
-                'content_md',
-                'content',
+                'content'
+                # 'is_md', # 当markdown和富文本共存的时候把注释去掉
+                # 'content_ck',
+                # 'content_md',  # 当markdown和富文本共存的时候把注释去掉
+                # 'content',    # 当markdown和富文本共存的时候把注释去掉
             ),
         }),
         # ('额外信息', {

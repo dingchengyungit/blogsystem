@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'blogsystem',
     'blog.apps.BlogConfig',
     'config.apps.ConfigConfig',

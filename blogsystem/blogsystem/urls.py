@@ -23,18 +23,19 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.sitemaps import views as sitemap_views
 
+from django.views.decorators.cache import cache_page
+
 from .autocomplete import CategoryAutocomplete, TagAutocomplete
+from .custom_site import custom_site
 
 from blog.views import (IndexView, CategoryView, TagView, PostDetailView, SearchView, AuthView, LinklistView,
                         demo, staticthml)
 from blog.sitemap import PostSitemap
 from blog.rss import LatestPostFeed
-# from blog.apis import post _list, PostList
 from blog.apis import PostViewSet, CategoryViewSet
 
 from comment.views import CommentView
 from config.views import links
-from .custom_site import custom_site
 
 router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='api-post')
@@ -48,7 +49,8 @@ urlpatterns = [
     url(r'^category-autocomplete/$', CategoryAutocomplete.as_view(), name='category-autocomplete'),
     url(r'^tag-autocomplete/$', TagAutocomplete.as_view(), name='tag-autocomplete'),
     url(r'^rss|feed/', LatestPostFeed(), name='rss'),
-    url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    # url(r'^sitemap\.xml$', sitemap_views.sitemap, {'sitemaps': {'posts': PostSitemap}}),
+    url(r'^sitemap\.xml$', cache_page(60 * 20, key_prefix='sitemap_cache_')(sitemap_views.sitemap), {'sitemaps': {'posts': PostSitemap}}),
     url(r'^comment/$', CommentView.as_view(), name='comment'),
     url(r'^links/$', LinklistView.as_view(), name='links'),
     url(r'^author/(?P<owner_id>\d+)/$', AuthView.as_view(), name='author'),

@@ -4,7 +4,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from django.utils.functional import cached_property
-
+from django.core.cache import cache
 
 # Create your models here.
 
@@ -137,10 +137,14 @@ class Post(models.Model):
     @classmethod
     def latest_posts(cls, with_related=True):
         post_list = cls.objects.filter(status=cls.STATUS_NORMAL)
-        if with_related:
+        if with_related:  # 减少sql查询
             post_list = post_list.select_related('owner', 'category')
         return post_list
 
     @classmethod
     def hot_posts(cls):
-        return cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+        result = cache.get('hot_posts')
+        if not result:
+            result = cls.objects.filter(status=cls.STATUS_NORMAL).order_by('-pv')
+            cache.set('hot_posts', result, 10 * 60)
+        return result

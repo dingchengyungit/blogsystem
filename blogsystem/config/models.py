@@ -65,6 +65,8 @@ class SideBar(models.Model):
 
     @classmethod
     def get_all(cls):
+        # import time  # 测试flamegraph用的代码
+        # time.sleep(0.1)  # 测试flamegraph用的代码
         return cls.objects.filter(status=cls.STATUS_SHOW)
 
     @property
